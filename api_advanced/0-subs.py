@@ -2,7 +2,7 @@
 """
 Module to query the Reddit API and return the number of subscribers
 for a given subreddit.
-
+these are the features 
 Features:
 - Returns subscriber count for existing subreddit.
 - Returns 0 for nonexisting subreddit.
