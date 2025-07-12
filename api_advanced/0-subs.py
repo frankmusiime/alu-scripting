@@ -25,10 +25,10 @@ def number_of_subscribers(subreddit):
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {
-        'User-Agent': (
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-            'AppleWebKit/537.36 (KHTML, like Gecko) '
-            'Chrome/58.0.3029.110 Safari/537.3'
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/58.0.3029.110 Safari/537.3"
         )
     }
 
@@ -46,6 +46,11 @@ def number_of_subscribers(subreddit):
 
 
 if __name__ == "__main__":
-    print("Python subreddit subscribers:", number_of_subscribers("python"))
-    print("Nonexisting subreddit subscribers:", number_of_subscribers(
-        "thissubdoesnotexist123"))
+    print(
+        "Python subreddit subscribers:",
+        number_of_subscribers("python")
+    )
+    print(
+        "Nonexisting subreddit subscribers:",
+        number_of_subscribers("thissubdoesnotexist123")
+    )
