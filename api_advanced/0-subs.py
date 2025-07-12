@@ -2,7 +2,8 @@
 """
 Module to query the Reddit API and return the number of subscribers
 for a given subreddit.
-these are the features 
+If the subreddit is invalid, returns 0.
+Ensures no redirects are followed for invalid subreddits.
 Features:
 - Returns subscriber count for existing subreddit.
 - Returns 0 for nonexisting subreddit.
