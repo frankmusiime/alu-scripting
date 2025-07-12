@@ -2,8 +2,7 @@
 """
 Module to query the Reddit API and return the number of subscribers
 for a given subreddit.
-If the subreddit is invalid, returns 0.
-Ensures no redirects are followed for invalid subreddits.
+
 Features:
 - Returns subscriber count for existing subreddit.
 - Returns 0 for nonexisting subreddit.
@@ -48,5 +47,5 @@ def number_of_subscribers(subreddit):
 
 if __name__ == "__main__":
     print("Python subreddit subscribers:", number_of_subscribers("python"))
-    print("Nonexisting subreddit subscribers:",
-          number_of_subscribers("thissubdoesnotexist123")
+    print("Nonexisting subreddit subscribers:", number_of_subscribers(
+        "thissubdoesnotexist123"))
