@@ -1,67 +1,51 @@
 #!/usr/bin/python3
 """
-This script uses a REST API to retrieve and display the TODO list progress
-of an employee based on their ID.
+Module to query the Reddit API and return the number of subscribers
+for a given subreddit.
 
-Usage:
-    ./todo.py <employee_id>
-
-Requirements:
-    - requests
-
-PEP8 Validation:
-    - Imports are ordered alphabetically
-    - Line length <= 79 characters
-    - Functions and logic are properly spaced and indented
-    - Docstrings follow PEP257 convention
+Features:
+- Returns subscriber count for existing subreddit.
+- Returns 0 for nonexisting subreddit.
+- Follows PEP8 guidelines.
 """
 
 import requests
-import sys
 
 
-def fetch_employee_todo_progress(employee_id):
+def number_of_subscribers(subreddit):
     """
-    Fetches and displays the TODO list progress for a given employee ID.
+    Queries the Reddit API and returns the number of subscribers
+    for a given subreddit.
 
     Args:
-        employee_id (int): The ID of the employee.
+        subreddit (str): The name of the subreddit.
+
+    Returns:
+        int: Number of subscribers, or 0 if subreddit is invalid.
     """
-    user_url = (
-        f'https://jsonplaceholder.typicode.com/users/{employee_id}'
-    )
-    todos_url = (
-        f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
-    )
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {
+        'User-Agent': (
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/58.0.3029.110 Safari/537.3'
+        )
+    }
 
-    user_response = requests.get(user_url)
-    if user_response.status_code != 200:
-        print(f"Employee with ID {employee_id} not found.")
-        return
+    try:
+        response = requests.get(
+            url, headers=headers, allow_redirects=False, timeout=10
+        )
+        if response.status_code == 200:
+            data = response.json()
+            return data.get("data", {}).get("subscribers", 0)
+    except requests.RequestException:
+        return 0
 
-    employee_name = user_response.json().get("name")
-
-    todos_response = requests.get(todos_url)
-    todos = todos_response.json()
-
-    total_tasks = len(todos)
-    done_tasks = [task for task in todos if task.get("completed")]
-    number_of_done_tasks = len(done_tasks)
-
-    print(f"Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_tasks}):")
-    for task in done_tasks:
-        print(f"\t {task.get('title')}")
+    return 0
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: ./todo.py <employee_id>")
-        sys.exit(1)
-
-    try:
-        emp_id = int(sys.argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        sys.exit(1)
-
-    fetch_employee_todo_progress(emp_id)
+    print("Python subreddit subscribers:", number_of_subscribers("python"))
+    print("Nonexisting subreddit subscribers:",
+          number_of_subscribers("thissubdoesnotexist123")
