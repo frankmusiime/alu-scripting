@@ -13,12 +13,11 @@ def recurse(subreddit, hot_list=None, after=None):
     
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-    params = {}
     
     if after:
-        params['after'] = after
+        url += "?after={}".format(after)
     
-    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+    response = requests.get(url, headers=headers)
     
     if response.status_code != 200:
         return None
@@ -27,11 +26,12 @@ def recurse(subreddit, hot_list=None, after=None):
     if data is None:
         return None
     
-    children = data.get("children", [])
+    children = data.get("children")
+    if not children:
+        return None if not hot_list else hot_list
     
     for child in children:
-        title = child.get("data").get("title")
-        hot_list.append(title)
+        hot_list.append(child.get("data").get("title"))
     
     after_token = data.get("after")
     if after_token:
