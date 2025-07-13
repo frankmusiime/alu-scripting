@@ -25,21 +25,24 @@ def top_ten(subreddit):
             print(None)
             return
             
-        data = response.json().get('data')
-        if not data:
+        json_data = response.json()
+        if not json_data or 'data' not in json_data:
             print(None)
             return
             
+        data = json_data['data']
         children = data.get('children', [])
+        
         if not children:
             print(None)
             return
             
         # Print titles of first 10 posts
-        for i, post in enumerate(children[:10]):
+        for post in children[:10]:
             post_data = post.get('data', {})
             title = post_data.get('title', '')
-            print(title)
+            if title:
+                print(title)
             
-    except (requests.RequestException, ValueError):
+    except (requests.RequestException, ValueError, KeyError):
         print(None)
